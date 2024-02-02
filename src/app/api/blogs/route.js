@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import mongoose from "mongoose";
-import Blog from "@/models/blog";
+import Blog from "../../../models/blog";
+import connectMongoDB from "../../libs/mongod"
 
 const MONGODB_URI = "mongodb://127.0.0.1:27017/blogtask"
 
@@ -16,73 +17,87 @@ export const POST = async (req, res) => {
 
     //await connectToDB();
 
-    console.log('Received data:', data,);
+    //console.log('Received data:', data,);
 
-    
+
     const blog = new Blog({
-       title: _title,
-       content: _desc
-     });
+      title: _title,
+      content: _desc
+    });
     await blog.save();
 
-    console.log("ARTICLE: " + blog);
+    console.log("POSTED Blog: " + blog);
+    await mongoose.disconnect();
 
+    return NextResponse.json({ data: "POST: Success" })
   } catch (error) {
     // Handle errors appropriately
     console.error('Error:', error);
     res.status(500).json({ error: 'Internal Server Error' });
-  } finally {
-    // Close the database connection if opened
-    mongoose.connection.close();
-    return NextResponse.json({ data: "POST: Success" })
   }
 
 }
 
 export const GET = async (req, res) => {
-    try {
-        const conn = await mongoose.connect(MONGODB_URI)
-      const result = await Blog.find().exec();
-      console.log( "FIND RESULT",result);
-      await mongoose.disconnect();
+  try {
+    const conn = await mongoose.connect(MONGODB_URI)
+    const result = await Blog.find().exec();
+    //console.log("FOUND RESULTs", result);
+    await mongoose.disconnect();
 
-      return NextResponse.json(result)
-    } catch (error) {
-      console.error(error);
-      return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
-    }
-
+    return NextResponse.json(result)
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 
-  export const PUT = async (req, res) => {
+}
+
+//Not using
+export const PUT = async (req, {params}) => {
+  try {
     const data = await req.json()
-    let id = data.postData.id
+    const user_id = data.postData.id
+    const title= data.postData.title
+    const content= data.postData.content
 
     console.log('UPDATE R data:', data.postData);
     delete data.postData.id;
-    const updatedData= {...data.postData, updatedAt: Date.now() }
-    console.log('UPDATED data:', updatedData);
+    const updatedData = { ...data.postData, }
+    console.log('WILL UPDATED data:', updatedData);
 
-    return NextResponse.json({ data: "POST: Success" })
-    /*
-    try { 
-        const conn = await mongoose.connect(MONGODB_URI)
-        var user_id = '5eb985d440bd2155e4d788e2'; 
-        Blog.findByIdAndUpdate(user_id,  {$set:{ updatedData }}, 
-                                    function (err, docs) { 
-            if (err){ 
-                console.log(err) 
-            } 
-            else{ 
-                console.log("Updated User : ", docs); 
-            } 
-        }); 
-      await mongoose.disconnect();
+    await connectMongoDB();
 
-      return NextResponse.json(result)
-    } catch (error) {
-      console.error(error);
-      return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
-    }
-*/
+    const updated =await Blog.findByIdAndUpdate(user_id, { title:title, content:content, updatedAt: Date.now() });
+    console.log('UPDATED data:', updated);
+
+    await mongoose.disconnect().then(console.log("discn"));
+
+    return NextResponse.json({ data: "UPDATE: Success" })
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
+}
+
+
+export const DELETE = async (req, res) => {
+  try {
+    //const id = req.nextURL.searchParams.get("id");
+    const data = await req.json()
+    const user_id = data.id
+    console.log("DELETE: ","id: ",user_id);
+
+    await connectMongoDB();
+
+    await Blog.findByIdAndDelete(user_id);
+
+    await mongoose.disconnect().then(console.log("discn"));
+
+    return NextResponse.json({ data: "DELETE: Success" })
+
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}

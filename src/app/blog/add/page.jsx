@@ -1,14 +1,15 @@
 'use client'
 
 import React, { useState } from 'react'
-
+import { useRouter } from "next/navigation";
 
 export default function AddPage() {
-
   const [postData, setPostData] = useState({
     title: "",
     description: ''
   });
+
+  const router = useRouter();
 
   const handleInputChange = (e) => {
     let value = e.target.value
@@ -49,6 +50,7 @@ export default function AddPage() {
         })
         if (res.ok) {
           console.log("Yeai!")
+          router.push("/blog");
         } else {
           console.log("Oops! Something is wrong.")
         }
@@ -77,7 +79,7 @@ export default function AddPage() {
         <div class="col-span-full">
           <label for="about" className="block text-sm font-medium leading-6 text-gray-900">Description</label>
           <div class="mt-2">
-            <textarea onChange={(e) => handleTextareaChange(e)} id="about" name="about" rows="3" className="block w-full max-w-2xl rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+            <textarea onChange={handleTextareaChange} id="about" name="about" rows="3" className="block w-full max-w-2xl rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
           </div>
           <p class="mb-3 text-sm leading-6 text-gray-600">Write a few sentences about.</p>
         </div>

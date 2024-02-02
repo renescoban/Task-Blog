@@ -1,8 +1,5 @@
 import React from 'react'
-import TopicsList from '@/components/TopicsList'
-import Blog from "@/models/blog";
-import RemoveBTN from '@/components/RemoveBTN'
-import EditBtn from '@/components/EditBtn'
+import TopicsList from '../../components/TopicsList'
 
 export default async function page() {
 
@@ -14,22 +11,15 @@ export default async function page() {
     <div className='p-4 mx-auto sm:max-w-2xl  '>
 
 
-      {Object.keys(blogs[0]).length > 4 ? (
-        <>
-          <p>{blogs[0].title}</p>
-          {blogs.map((blog ,index) => (
-            <div className='bg-white p-4 rounded-sm border border-black my-3 flex justify-between items-start gap-5'>
-              <TopicsList key={blog._id} title={blog.title} content={blog.content} date={blog.createdAt} />
-              <div className='flex gap-2'>
-                <RemoveBTN key={blog._id+"rmv"}/>
-                <EditBtn key={blog._id+"edt"} id={blog._id} />
-              </div>
-            </div>
-          ))}
-        </>
-      ) : (
-        <p>Loading blogs...</p>
-      )}
+      <>
+        <p>{blogs[0].title}</p>
+        {blogs.map((blog, index) => (
+
+          <TopicsList key={blog._id} id={blog._id} title={blog.title} content={blog.content} date={blog.createdAt} />
+
+        ))}
+      </>
+
 
     </div>
   )
@@ -46,7 +36,7 @@ const getBlogs = async () => {
     }
     // Handle the response data
     const data = await res.json();
-    console.log('GET:Response:', data);//typeof obj
+    //console.log('GET:Response:', data);//typeof obj
     return data
   } catch (error) {
     // Handle any errors that occurred during the request

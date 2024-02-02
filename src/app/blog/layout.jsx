@@ -1,5 +1,4 @@
 import React from 'react'
-import Header from '@/components/Header'
 import Link from 'next/link'
 
 export default function Layout({ children }) {
@@ -13,12 +12,6 @@ export default function Layout({ children }) {
           </nav>
           
           <div className='mt-8'>{children}</div>
-  
-          {/* <TopicsList />
-          <TopicsList />
-          <TopicsList />
-          <TopicsList /> */}
-  
   
       </div>
       </>
