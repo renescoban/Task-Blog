@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import RemoveBTN from './RemoveBTN'
+import { useRouter } from "next/navigation";
 import Link from 'next/link'
 import { HiPencilAlt } from 'react-icons/hi'
 import { HiOutlineTrash } from 'react-icons/hi'
@@ -9,14 +9,10 @@ import '@radix-ui/themes/styles.css';
 import { AlertDialog, Button, Flex, Theme } from '@radix-ui/themes';
 
 
-
-
-
-
-
 export default function TopicsList(props) {
   const id = props.id
-
+  const router = useRouter();
+  
   const handleDelete = () => {
     console.log("deleting...", id);
 
@@ -34,8 +30,8 @@ export default function TopicsList(props) {
           body: JSON.stringify({ id }),
         })
         if (res.ok) {
-          console.log("Yeai!")
-          router.push("/blog");
+          console.log("DLT: Yeai!")
+          router.reload();
         } else {
           console.log("Oops! Something is wrong.")
         }

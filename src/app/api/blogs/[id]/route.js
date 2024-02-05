@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import mongoose from "mongoose";
-import Blog from "../../../../models/blog";
-import connectMongoDB from "../../../libs/mongod"
+import { Blog } from "../../../../models/blog";
+import connectMongoDB from "../../../../libs/mongod"
 
 export const GET = async (req, { params }) => {
     try {
@@ -10,7 +10,8 @@ export const GET = async (req, { params }) => {
         await connectMongoDB();
         const blog = await Blog.findById(id).exec();
         //console.log("FOUND RESULT", result);
-        await mongoose.disconnect().then(console.log("discn"));
+        
+        
 
         return NextResponse.json({ blog })
     } catch (error) {

@@ -1,5 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ClerkProvider } from '@clerk/nextjs'
+import { UserButton } from "@clerk/nextjs";
 
 const inter = Inter({ subsets: ["latin"],
 variable: "--font-sans" });
@@ -11,6 +13,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
+    <ClerkProvider>
     <html lang="en">
       <body className=  {inter.className}  >
         <div className='main'>
@@ -23,12 +26,13 @@ export default function RootLayout({ children }) {
               <a href="/" className='px-2 text-black'>Home</a>
             </div>
             <div className='flex gap-5'>buton navs</div>
-            <div className='pr-2'>prf</div>
+            <UserButton afterSignOutUrl="/"/>
           </nav>
 
           {children}
         </main>
       </body>
     </html>
+    </ClerkProvider>
   );
 }

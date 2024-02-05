@@ -10,16 +10,17 @@ export default async function page() {
   return (
     <div className='p-4 mx-auto sm:max-w-2xl  '>
 
+      {true ? (
+        <>
 
-      <>
-        <p>{blogs[0].title}</p>
-        {blogs.map((blog, index) => (
+          {blogs.map((blog, index) => (
 
-          <TopicsList key={blog._id} id={blog._id} title={blog.title} content={blog.content} date={blog.createdAt} />
+            <TopicsList key={blog._id} id={blog._id} title={blog.title} content={blog.content} date={blog.createdAt} />
 
-        ))}
-      </>
+          ))}
 
+        </>
+      ) : ("asd")}
 
     </div>
   )

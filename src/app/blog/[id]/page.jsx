@@ -4,16 +4,19 @@ import EditPage from "../../../components/EditPage"
 
 export default async function Page({ params }) {
   const id = params.id;
+  
   const blogData = await getBlogById(id)
   const { blog } = await Promise.resolve(blogData)
   const { _id ,title, content } = blog;
   //console.log(title, content);
 
+  
+
   return (
     <>
-      <div>edit: {id}</div>
-      <EditPage id={_id} title={title} content={content} />
-    </>
+    <div>edit: {id}</div>
+    <EditPage id={_id} title={title} content={content} />
+  </>
   )
 }
 

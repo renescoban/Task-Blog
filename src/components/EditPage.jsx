@@ -1,5 +1,5 @@
 'use client'
-
+import { useRouter } from "next/navigation";
 import React, { useState } from 'react'
 
 export default function EditPage( {id, title, content }  ) {
@@ -8,7 +8,7 @@ export default function EditPage( {id, title, content }  ) {
         title : title,
         content : content
     });
-
+    const router = useRouter();
     //console.log("PROPS: ----"+  title, content, "DATA: ",postData);
 
     const handleInputChange = (e) => {
@@ -48,6 +48,7 @@ export default function EditPage( {id, title, content }  ) {
                     body: JSON.stringify({ postData }),
                 })
                 if (res.ok) {
+                    router.push("/blog");
                     console.log("Yeai!")
                 } else {
                     console.log("Oops! Something is wrong.")
